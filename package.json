@@ -1,0 +1,113 @@
+{
+  "name": "code-archeologist",
+  "displayName": "Code Archeologist",
+  "description": "Ask questions about a codebase, see who wrote relevant lines (git blame), and get a Hugging Face LLM answer.",
+  "version": "0.0.1",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "type": "webview",
+          "id": "codeArcheologist.chatPanel",
+          "name": "Code Archeologist",
+          "icon": "$(comment)"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "codeArcheologist.setHfToken",
+        "title": "Code Archeologist: Set Hugging Face Token"
+      },
+      {
+        "command": "codeArcheologist.clearHfToken",
+        "title": "Code Archeologist: Clear Hugging Face Token"
+      },
+      {
+        "command": "codeArcheologist.reindex",
+        "title": "Code Archeologist: Reindex Workspace"
+      }
+    ],
+    "configuration": {
+      "title": "Code Archeologist",
+      "properties": {
+        "codeArcheologist.embeddingModel": {
+          "type": "string",
+          "default": "sentence-transformers/all-MiniLM-L6-v2",
+          "description": "Hugging Face model id used for embeddings (Inference API)."
+        },
+        "codeArcheologist.answerModel": {
+          "type": "string",
+          "default": "mistralai/Mistral-7B-Instruct-v0.3",
+          "description": "Hugging Face model id used to generate the final answer (Inference API)."
+        },
+        "codeArcheologist.topK": {
+          "type": "number",
+          "default": 6,
+          "minimum": 1,
+          "maximum": 20,
+          "description": "How many code chunks to retrieve for answering."
+        },
+        "codeArcheologist.chunkLines": {
+          "type": "number",
+          "default": 80,
+          "minimum": 20,
+          "maximum": 400,
+          "description": "Lines per chunk when indexing."
+        },
+        "codeArcheologist.chunkOverlapLines": {
+          "type": "number",
+          "default": 20,
+          "minimum": 0,
+          "maximum": 200,
+          "description": "Line overlap between adjacent chunks when indexing."
+        }
+      }
+    },
+    "chatParticipants": [
+      {
+        "id": "code-archeologist",
+        "name": "code-archeologist",
+        "fullName": "Code Archeologist",
+        "description": "Answers questions about the workspace and attributes relevant lines using git blame.",
+        "isSticky": true,
+        "commands": [
+          {
+            "name": "ask",
+            "description": "Ask a question about the current workspace"
+          }
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint . --ext .ts",
+    "vscode:prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.107.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.6.0",
+    "vscode": "^1.1.34"
+  },
+  "dependencies": {
+    "@huggingface/inference": "^4.0.5",
+    "@langchain/community": "^0.3.0",
+    "@langchain/core": "^0.3.0",
+    "dotenv": "^17.2.3",
+    "langchain": "^0.3.0"
+  }
+}
