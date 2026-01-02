@@ -24,4 +24,4 @@ Press `F5` to launch an Extension Development Host.
 ## Defaults
 
 - Embeddings model: `sentence-transformers/all-MiniLM-L6-v2`
-- Answer model: `meta-llama/Llama-3.1-8B-Instruct`
+- Answer model: `openai/gpt-oss-20b`
